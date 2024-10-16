@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AVZ
+namespace AVZ.Characters
 {
     public class Movement
     {

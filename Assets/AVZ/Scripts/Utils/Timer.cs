@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AVZ
+namespace AVZ.Utils
 {
     [Serializable]
     public class Timer

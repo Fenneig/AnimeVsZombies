@@ -1,13 +1,20 @@
-﻿using UnityEngine;
+﻿using AVZ.Pools;
+using AVZ.Utils;
+using UnityEngine;
+using Zenject;
 
-namespace AVZ
+namespace AVZ.Weapon
 {
-    public class Gun  : MonoBehaviour
+    public class Gun : MonoBehaviour
     {
-        [SerializeField] private Bullet _bulletPrefab;
         [SerializeField] private Transform _fireSpot;
         [SerializeField] private float _fireRate;
         private Timer _timer;
+        private BulletsPool _bulletsPool;
+
+        [Inject]
+        private void Construct(BulletsPool bulletsPool) =>
+            _bulletsPool = bulletsPool;
 
         private void Start()
         {
@@ -24,7 +31,7 @@ namespace AVZ
             _timer.Reset();
         }
 
-        private void Fire() => 
-            Instantiate(_bulletPrefab, _fireSpot.position, Quaternion.identity);
+        private void Fire() =>
+            _bulletsPool.Create(_fireSpot.position);
     }
 }

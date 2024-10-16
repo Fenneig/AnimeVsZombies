@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace AVZ
+namespace AVZ.Weapon
 {
     public class Bullet : MonoBehaviour
     {
         [SerializeField] private float _speed;
+        [SerializeField] private TrailRenderer _trail;
+        public TrailRenderer Trail => _trail;
+        public event Action OnSurfaceReached; 
 
         private void Update() => 
             transform.position += Vector3.forward * Time.deltaTime * _speed;
@@ -17,9 +21,8 @@ namespace AVZ
                     return;
                 
                 target.Hit();
-                Destroy(gameObject);
+                OnSurfaceReached?.Invoke();
             }
-            
         }
     }
 }
