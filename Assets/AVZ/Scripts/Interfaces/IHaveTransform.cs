@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace AVZ
+namespace AVZ.Interfaces
 {
     public interface IHaveTransform
     {

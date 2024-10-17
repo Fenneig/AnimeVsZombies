@@ -4,13 +4,15 @@ namespace AVZ.Characters
 {
     public class Movement
     {
-        private CharacterController _controller;
+        private Rigidbody _rigidbody;
+        private Transform _transform;
         private float _speed;
-        private float _direction;
+        private Vector3 _direction;
 
-        public Movement(CharacterController controller, float speed)
+        public Movement(Rigidbody rigidbody, Transform transform, float speed)
         {
-            _controller = controller;
+            _rigidbody = rigidbody;
+            _transform = transform;
             _speed = speed;
         }
         public float Speed
@@ -18,14 +20,11 @@ namespace AVZ.Characters
             get => _speed;
             set => _speed = value;
         }
-        
-        public float Direction
-        {
-            get => _direction;
-            set => _direction = value;
-        }
+
+        public void SetDirectionX(float x) => _direction.x = x;
+        public void SetDirectionZ(float z) => _direction.z = z;
         
         public void Move() => 
-            _controller.Move(Vector3.right * _direction * Time.deltaTime * _speed);
+            _rigidbody.MovePosition(_transform.position + _direction * _speed * Time.fixedDeltaTime);
     }
 }

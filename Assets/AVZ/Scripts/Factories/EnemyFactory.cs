@@ -4,9 +4,9 @@ using Zenject;
 
 namespace AVZ.Factories
 {
-    public class EnemyFactory : Factory<EnemyMovement>
+    public class EnemyFactory : Factory<Zombie>
     {
-        public EnemyFactory(DiContainer diContainer, EnemyMovement prefab, Transform parent = null) : base(diContainer, prefab, parent)
+        public EnemyFactory(DiContainer diContainer, Zombie prefab, Transform parent = null) : base(diContainer, prefab, parent)
         {
         }
     }

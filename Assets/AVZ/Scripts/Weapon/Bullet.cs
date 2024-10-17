@@ -1,4 +1,5 @@
 ﻿using System;
+using AVZ.Interfaces;
 using UnityEngine;
 
 namespace AVZ.Weapon
@@ -13,16 +14,17 @@ namespace AVZ.Weapon
         private void Update() => 
             transform.position += Vector3.forward * Time.deltaTime * _speed;
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.TryGetComponent(out IDamageable target))
-            {
-                if (target.Side != Side.Zombies) 
+            if (!other.gameObject.TryGetComponent(out IDamageable target))
+                return;
+
+            if (other.gameObject.TryGetComponent(out IHaveSide targetSide))
+                if (targetSide.Side != Side.Zombies)
                     return;
-                
-                target.Hit();
-                OnSurfaceReached?.Invoke();
-            }
+
+            target.Hit();
+            OnSurfaceReached?.Invoke();
         }
     }
 }
