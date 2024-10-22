@@ -1,6 +1,7 @@
 ﻿using System;
 using AVZ.Interfaces;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AVZ.Weapon
 {
@@ -8,23 +9,31 @@ namespace AVZ.Weapon
     {
         [SerializeField] private float _speed;
         [SerializeField] private TrailRenderer _trail;
+        [FormerlySerializedAs("_enemyLayer")] [SerializeField] private LayerMask _collidingLayers;
+        private RaycastHit[] _result = new RaycastHit[1];
         public TrailRenderer Trail => _trail;
-        public event Action OnSurfaceReached; 
+        public event Action<Bullet> OnSurfaceReached; 
+        
 
-        private void Update() => 
-            transform.position += Vector3.forward * Time.deltaTime * _speed;
-
-        private void OnTriggerEnter(Collider other)
+        private void FixedUpdate()
         {
-            if (!other.gameObject.TryGetComponent(out IDamageable target))
+            float stepDistance = Time.fixedDeltaTime * _speed;
+            transform.position += Vector3.forward * stepDistance;
+
+            Ray ray = new Ray(transform.position, transform.forward);
+
+            Physics.RaycastNonAlloc(ray, _result, stepDistance, _collidingLayers);
+
+            if (_result[0].collider == null)
                 return;
-
-            if (other.gameObject.TryGetComponent(out IHaveSide targetSide))
-                if (targetSide.Side != Side.Zombies)
-                    return;
-
-            target.Hit();
-            OnSurfaceReached?.Invoke();
+            
+            if (_result[0].collider.gameObject.TryGetComponent(out IDamageable target))
+            {
+                target.Hit();
+                _result[0] = default;
+            }
+            
+            OnSurfaceReached?.Invoke(this);
         }
     }
 }

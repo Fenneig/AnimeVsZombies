@@ -2506,9 +2506,9 @@ MonoBehaviour:
   _upperLeftCorner: {fileID: 755328158}
   _bottomRightCorner: {fileID: 1547100380}
   _spawnTime: 1.5
-  _buffSpawnChance: 35
-  _minAmount: 10
-  _maxAmount: 20
+  _buffSpawnChance: 15
+  _minAmount: 5
+  _maxAmount: 10
 --- !u!4 &896587255
 Transform:
   m_ObjectHideFlags: 0
@@ -2518,7 +2518,7 @@ Transform:
   m_GameObject: {fileID: 896587253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.47, z: 21.3}
+  m_LocalPosition: {x: 0, y: 3.47, z: 24.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3193,8 +3193,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 2066514186}
   - {fileID: 1970096619}
+  - {fileID: 2066514186}
   - {fileID: 1216965250}
   - {fileID: 1027599455}
   _installerPrefabs: []

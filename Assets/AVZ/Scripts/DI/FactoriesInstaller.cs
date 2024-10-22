@@ -21,7 +21,7 @@ namespace AVZ.DI
         {
             Container.Bind<BulletFactory>().FromNew().AsSingle().WithArguments(_bulletPrefab, _bulletsRootTransform);
             Container.Bind<PlayerFactory>().FromNew().AsSingle().WithArguments(_playerPrefab, _charactersRootTransform);
-            Container.Bind<EnemyFactory>().FromNew().AsSingle().WithArguments(_zombiePrefab, _charactersRootTransform);
+            Container.Bind<ZombieFactory>().FromNew().AsSingle().WithArguments(_zombiePrefab, _charactersRootTransform);
             Container.Bind<GateFactory>().FromNew().AsSingle().WithArguments(_gatePrefab, _obstacleRootTransform);
             Container.Bind<VisualFactory>().FromNew().AsSingle().WithArguments(_visualPrefab);
         }

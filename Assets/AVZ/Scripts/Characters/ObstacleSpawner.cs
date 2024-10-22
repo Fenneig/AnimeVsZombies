@@ -1,4 +1,5 @@
 ﻿using AVZ.Factories;
+using AVZ.Pools;
 using AVZ.Utils;
 using UnityEngine;
 using Zenject;
@@ -17,13 +18,13 @@ namespace AVZ.Characters
 
         private const float POSITION_Y = 2.580005f;
         private Timer _timer;
-        private EnemyFactory _enemyFactory;
+        private ZombiePool _zombiePool;
         private GateFactory _gateFactory;
 
         [Inject]
-        private void Construct(EnemyFactory enemyFactory, GateFactory gateFactory)
+        private void Construct(ZombiePool zombiePool, GateFactory gateFactory)
         {
-            _enemyFactory = enemyFactory;
+            _zombiePool = zombiePool;
             _gateFactory = gateFactory;
         }
 
@@ -44,7 +45,7 @@ namespace AVZ.Characters
                 float positionZ = Random.Range(_upperLeftCorner.position.z, _bottomRightCorner.position.z);
                 Vector3 newPosition = new Vector3(positionX, POSITION_Y, positionZ);
 
-                _enemyFactory.Get(newPosition, new Quaternion(0, 180, 0, 0));
+                _zombiePool.Create(newPosition, new Quaternion(0, 180, 0, 0));
             }
         }
 

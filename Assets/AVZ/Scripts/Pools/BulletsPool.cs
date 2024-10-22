@@ -1,44 +1,33 @@
-﻿using System.Collections.Generic;
-using AVZ.Factories;
+﻿using AVZ.Factories;
 using AVZ.Weapon;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace AVZ.Pools
 {
-    public class BulletsPool
+    public class BulletsPool : AbstractPool<Bullet>
     {
-        private BulletFactory _bulletFactory;
-
-        private Queue<Bullet> _availableBullets;
-
-        public BulletsPool(BulletFactory bulletFactory)
-        {
-            _bulletFactory = bulletFactory;
-            _availableBullets = new Queue<Bullet>();
-        }
+        public BulletsPool(BulletFactory bulletFactory) : base(bulletFactory)
+        {}
         
         public Bullet Create(Vector3 position)
         {
-            if (_availableBullets.TryDequeue(out Bullet bullet))
-            {
-                bullet.transform.position = position;
-                bullet.transform.rotation = Quaternion.identity;
-                bullet.gameObject.SetActive(true);
-                return bullet;
-            }
+            Bullet bullet = base.Create(position);
 
-            //??
-            Bullet newBullet = _bulletFactory.Get(position, Quaternion.identity);
-            newBullet.OnSurfaceReached += () => Release(newBullet);
-            //??
+            bullet.transform.position = position;
+            bullet.transform.rotation = quaternion.identity;
+            bullet.gameObject.SetActive(true);
+            bullet.OnSurfaceReached += Release;
+
             return bullet;
         }
         
         public void Release(Bullet bullet)
         {
+            bullet.OnSurfaceReached -= Release;
             bullet.Trail.Clear();
-            bullet.gameObject.SetActive(false);
-            _availableBullets.Enqueue(bullet);
+            bullet.gameObject.SetActive(false); 
+            base.Release(bullet);
         }
     }
 }

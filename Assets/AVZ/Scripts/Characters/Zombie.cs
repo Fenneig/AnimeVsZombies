@@ -1,4 +1,5 @@
-﻿using AVZ.Interfaces;
+﻿using System;
+using AVZ.Interfaces;
 using UnityEngine;
 
 namespace AVZ.Characters
@@ -6,12 +7,12 @@ namespace AVZ.Characters
     public class Zombie : MonoBehaviour, IDamageable, IHaveSide
     {
         [SerializeField] private Transform _transform;
-        [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private float _speed;
         [SerializeField] private float _rotationSpeed;
 
         private Transform _target;
         public Side Side => Side.Zombies;
+        public event Action<Zombie> OnDie;
 
         public void SetTarget(Transform target)
         {
@@ -19,23 +20,22 @@ namespace AVZ.Characters
                 _target = target;
         }
         
-        public void Hit()
-        {
-            Destroy(gameObject);
-        }
-        
+        public void Hit() => 
+            OnDie?.Invoke(this);
+
         private void FixedUpdate()
         {
             if (_target != null)
             {
-                Vector3 direction = _target.transform.position - transform.position;
-
-                Quaternion targetQuaternion = Quaternion.LookRotation(direction);
-
-                _rigidbody.MoveRotation(Quaternion.Slerp(_transform.rotation, targetQuaternion, Time.fixedDeltaTime * _rotationSpeed));
+                Vector3 direction = (_target.transform.position - _transform.position).normalized;
+                direction.y = 0;
+                
+                Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, _rotationSpeed * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
+        
+                transform.rotation = Quaternion.LookRotation(newDirection);
             }
 
-            _rigidbody.MovePosition(_transform.position + _transform.forward * Time.fixedDeltaTime * _speed);
+            transform.position = _transform.position + _transform.forward * Time.fixedDeltaTime * _speed;
         }
 
         private void OnCollisionEnter(Collision collision)

@@ -8,6 +8,7 @@ namespace AVZ.DI
         public override void InstallBindings()
         {
             Container.Bind<BulletsPool>().FromNew().AsSingle();
+            Container.Bind<ZombiePool>().FromNew().AsSingle();
         }
     }
 }
