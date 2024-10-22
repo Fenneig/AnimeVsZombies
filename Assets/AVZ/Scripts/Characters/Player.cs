@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using AVZ.Factories;
 using AVZ.Interfaces;
+using AVZ.Pools;
 using AVZ.Weapon;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -10,29 +10,28 @@ namespace AVZ.Characters
 {
     public class Player : MonoBehaviour, IHaveTransform, IDamageable, IHaveSide
     {
-        [SerializeField] private GameObject _visualPrefab;
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private float _speed;
         [SerializeField] private List<Transform> _spawnPositions;
 
         private Movement _movement;
         private CinemachineCamera _camera;
-        private VisualFactory _visualFactory;
+        private VisualPool _visualPool;
         private List<Gun> _visuals = new List<Gun>();
 
         [Inject]
-        private void Construct(CinemachineCamera cinemachineCamera, VisualFactory visualFactory)
+        private void Construct(CinemachineCamera cinemachineCamera, VisualPool visualFactory)
         {
             _camera = cinemachineCamera;
-            _visualFactory = visualFactory;
+            _visualPool = visualFactory;
         } 
 
         public Transform Transform => transform;
 
         public Side Side => Side.Anime;
-        
-        public void Hit() => 
-            Destroy(gameObject);
+
+        public void Hit() =>
+            RemoveCharacters(1);
 
         public void AddCharacters(int amount)
         {
@@ -44,15 +43,24 @@ namespace AVZ.Characters
 
             for (int i = 0; i < amount; i++)
             {
-                Gun visual = _visualFactory.Get(_spawnPositions[_visuals.Count].position, Quaternion.identity);
+                Gun visual = _visualPool.Create(_spawnPositions[_visuals.Count].position);
                 visual.transform.SetParent(_spawnPositions[_visuals.Count].transform);
+                visual.transform.localPosition = Vector3.zero;
                 _visuals.Add(visual);
             }
         }
 
         public void RemoveCharacters(int amount)
         {
+            if (amount > _visuals.Count) 
+                amount = _visuals.Count;
             
+            for (int i = 0; i < amount; i++)
+            {
+                Gun visualToRemove = _visuals[^1];
+                _visuals.Remove(visualToRemove);
+                _visualPool.Release(visualToRemove);
+            }
         }
         
         private void FixedUpdate()

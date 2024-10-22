@@ -48,6 +48,7 @@ namespace AVZ.Characters
                     return;
 
             target.Hit();
+            Hit();
         }
     }
 }

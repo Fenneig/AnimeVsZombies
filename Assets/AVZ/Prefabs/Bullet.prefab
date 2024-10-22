@@ -163,6 +163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 10
   _trail: {fileID: 4409391053949641909}
-  _enemyLayer:
+  _collidingLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192

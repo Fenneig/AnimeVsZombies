@@ -23,11 +23,11 @@ namespace AVZ.Pools
             return zombie;
         }
 
-        public override void Release(Zombie zombie)
+        public override void Release(Zombie visual)
         {
-            zombie.OnDie -= Release;
-            zombie.gameObject.SetActive(false);
-            base.Release(zombie);
+            visual.OnDie -= Release;
+            visual.gameObject.SetActive(false);
+            base.Release(visual);
         }
     }
 }

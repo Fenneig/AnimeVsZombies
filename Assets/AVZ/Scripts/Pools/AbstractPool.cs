@@ -21,7 +21,7 @@ namespace AVZ.Pools
                 ? objectToCreate 
                 : _factory.Get(position, quaternion.identity);
 
-        public virtual void Release(T zombie) => 
-            _availableObjects.Enqueue(zombie);
+        public virtual void Release(T visual) => 
+            _availableObjects.Enqueue(visual);
     }
 }

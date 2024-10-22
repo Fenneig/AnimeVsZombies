@@ -9,6 +9,8 @@ namespace AVZ.Characters
     {
         [Header("Settings")]
         [SerializeField] private float _speed;
+        [SerializeField, Tooltip("Inclusive")] private int _minAmount;
+        [SerializeField, Tooltip("Exclusive")] private int _maxAmount;
         [Header("Visual")]
         [SerializeField] private Material _badMaterial;
         [SerializeField] private Material _goodMaterial;
@@ -23,7 +25,9 @@ namespace AVZ.Characters
 
         private void Start()
         {
-            int amount = Random.Range(1, 5);
+            int amount;
+            do amount = Random.Range(_minAmount, _maxAmount);
+            while (amount == 0);
             _value = amount;
             _amount.text = amount > 0 ? $"+{amount}" : $"{amount}";
             _mainGate.material = amount > 0 ? _goodMaterial : _badMaterial;

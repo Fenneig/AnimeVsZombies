@@ -9,6 +9,7 @@ namespace AVZ.DI
         {
             Container.Bind<BulletsPool>().FromNew().AsSingle();
             Container.Bind<ZombiePool>().FromNew().AsSingle();
+            Container.Bind<VisualPool>().FromNew().AsSingle();
         }
     }
 }

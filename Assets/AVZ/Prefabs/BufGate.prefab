@@ -71,6 +71,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
+  _minAmount: -3
+  _maxAmount: 4
   _badMaterial: {fileID: 2100000, guid: a26cb981ea2df28409602b2637452e8e, type: 2}
   _goodMaterial: {fileID: 2100000, guid: 5f0e1f0311d685b4a862273c2fdffb00, type: 2}
   _mainGate: {fileID: 6774491552985168889}
